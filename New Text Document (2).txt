@@ -1,0 +1,103 @@
+import java.util.*;
+
+public class StudentManagement {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter number of students:");
+        int numberOfStudents = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        List<FailedStudent> failedStudents = new ArrayList<>();
+        List<PromotedStudent> promotedStudents = new ArrayList<>();
+
+        for (int i = 0; i < numberOfStudents; i++) {
+            System.out.println("Enter roll number:");
+            int rollNumber = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+            System.out.println("Enter subject code:");
+            String subjectCode = scanner.nextLine();
+            System.out.println("Enter subject name:");
+            String subjectName = scanner.nextLine();
+            System.out.println("Enter status (F for failed, P for promoted):");
+            String status = scanner.nextLine();
+
+            if (status.equalsIgnoreCase("F")) {
+                failedStudents.add(new FailedStudent(rollNumber, subjectCode, subjectName));
+            } else if (status.equalsIgnoreCase("P")) {
+                promotedStudents.add(new PromotedStudent(rollNumber, subjectCode, subjectName));
+            } else {
+                System.out.println("Invalid status. Student not added.");
+            }
+        }
+
+        // Make failedStudents list unmodifiable
+        failedStudents = Collections.unmodifiableList(failedStudents);
+
+        // Demonstrate immutability and mutability
+        System.out.println("Failed Students:");
+        for (FailedStudent fs : failedStudents) {
+            System.out.println(fs);
+        }
+
+        System.out.println("Promoted Students:");
+        for (PromotedStudent ps : promotedStudents) {
+            System.out.println(ps);
+        }
+
+        // Example of modifying a promoted student
+        if (!promotedStudents.isEmpty()) {
+            PromotedStudent student = promotedStudents.get(0);
+            student.setSubjectName("New Subject Name");
+            System.out.println("Updated first promoted student: " + student);
+        }
+    }
+}
+
+// Immutable record for failed students
+public record FailedStudent(int rollNumber, String subjectCode, String subjectName) {}
+
+// Mutable class for promoted students
+public class PromotedStudent {
+    private int rollNumber;
+    private String subjectCode;
+    private String subjectName;
+
+    public PromotedStudent(int rollNumber, String subjectCode, String subjectName) {
+        this.rollNumber = rollNumber;
+        this.subjectCode = subjectCode;
+        this.subjectName = subjectName;
+    }
+
+    public int getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(int rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+    public String getSubjectCode() {
+        return subjectCode;
+    }
+
+    public void setSubjectCode(String subjectCode) {
+        this.subjectCode = subjectCode;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    @Override
+    public String toString() {
+        return "PromotedStudent{" +
+                "rollNumber=" + rollNumber +
+                ", subjectCode='" + subjectCode + '\'' +
+                ", subjectName='" + subjectName + '\'' +
+                '}';
+    }
+}
