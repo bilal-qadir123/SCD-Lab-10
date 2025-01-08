@@ -1,103 +1,68 @@
-import java.util.*;
+public class Circle {
+    private double radius;
 
-public class StudentManagement {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter number of students:");
-        int numberOfStudents = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+    public Circle(double radius) {
+        this.radius = radius;
+    }
 
-        List<FailedStudent> failedStudents = new ArrayList<>();
-        List<PromotedStudent> promotedStudents = new ArrayList<>();
+    public double getRadius() {
+        return radius;
+    }
 
-        for (int i = 0; i < numberOfStudents; i++) {
-            System.out.println("Enter roll number:");
-            int rollNumber = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-            System.out.println("Enter subject code:");
-            String subjectCode = scanner.nextLine();
-            System.out.println("Enter subject name:");
-            String subjectName = scanner.nextLine();
-            System.out.println("Enter status (F for failed, P for promoted):");
-            String status = scanner.nextLine();
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
 
-            if (status.equalsIgnoreCase("F")) {
-                failedStudents.add(new FailedStudent(rollNumber, subjectCode, subjectName));
-            } else if (status.equalsIgnoreCase("P")) {
-                promotedStudents.add(new PromotedStudent(rollNumber, subjectCode, subjectName));
-            } else {
-                System.out.println("Invalid status. Student not added.");
-            }
-        }
+    public double getArea() {
+        return Math.PI * radius * radius;
+    }
 
-        // Make failedStudents list unmodifiable
-        failedStudents = Collections.unmodifiableList(failedStudents);
-
-        // Demonstrate immutability and mutability
-        System.out.println("Failed Students:");
-        for (FailedStudent fs : failedStudents) {
-            System.out.println(fs);
-        }
-
-        System.out.println("Promoted Students:");
-        for (PromotedStudent ps : promotedStudents) {
-            System.out.println(ps);
-        }
-
-        // Example of modifying a promoted student
-        if (!promotedStudents.isEmpty()) {
-            PromotedStudent student = promotedStudents.get(0);
-            student.setSubjectName("New Subject Name");
-            System.out.println("Updated first promoted student: " + student);
-        }
+    public double getCircumference() {
+        return 2 * Math.PI * radius;
     }
 }
 
-// Immutable record for failed students
-public record FailedStudent(int rollNumber, String subjectCode, String subjectName) {}
+public class Sphere {
+    private double radius;
 
-// Mutable class for promoted students
-public class PromotedStudent {
-    private int rollNumber;
-    private String subjectCode;
-    private String subjectName;
-
-    public PromotedStudent(int rollNumber, String subjectCode, String subjectName) {
-        this.rollNumber = rollNumber;
-        this.subjectCode = subjectCode;
-        this.subjectName = subjectName;
+    public Sphere(double radius) {
+        this.radius = radius;
     }
 
-    public int getRollNumber() {
-        return rollNumber;
+    public double getRadius() {
+        return radius;
     }
 
-    public void setRollNumber(int rollNumber) {
-        this.rollNumber = rollNumber;
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
-    public String getSubjectCode() {
-        return subjectCode;
+    public double getVolume() {
+        return (4 / 3.0) * Math.PI * Math.pow(radius, 3);
     }
 
-    public void setSubjectCode(String subjectCode) {
-        this.subjectCode = subjectCode;
+    public double getSurfaceArea() {
+        return 4 * Math.PI * Math.pow(radius, 2);
     }
+}
 
-    public String getSubjectName() {
-        return subjectName;
-    }
+public class Test {
+    public static void main(String[] args) {
+        Circle circle = new Circle(5);
+        System.out.println("Circle Area: " + circle.getArea());
+        System.out.println("Circle Circumference: " + circle.getCircumference());
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
+        Sphere sphere = new Sphere(3);
+        System.out.println("Sphere Volume: " + sphere.getVolume());
+        System.out.println("Sphere Surface Area: " + sphere.getSurfaceArea());
 
-    @Override
-    public String toString() {
-        return "PromotedStudent{" +
-                "rollNumber=" + rollNumber +
-                ", subjectCode='" + subjectCode + '\'' +
-                ", subjectName='" + subjectName + '\'' +
-                '}';
+        circle.setRadius(7);
+        sphere.setRadius(4);
+
+        System.out.println("\nAfter changing radius:");
+        System.out.println("Updated Circle Area: " + circle.getArea());
+        System.out.println("Updated Circle Circumference: " + circle.getCircumference());
+        System.out.println("Updated Sphere Volume: " + sphere.getVolume());
+        System.out.println("Updated Sphere Surface Area: " + sphere.getSurfaceArea());
     }
 }
